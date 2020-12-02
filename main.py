@@ -2,13 +2,19 @@ import argparse
 import datetime
 import lzma
 import os
+from signal import signal, SIGINT
 import queue
 import sys
 import time
 import yaml
-
 from ble_mat_facade import print_mas
 from th_ble import ReadBLELCMessagesForever
+
+
+def _sigint_handler(_s, _f):
+    # Handle any cleanup here
+    print('CTRL-C detected, exit all threads')
+    os._exit(0)
 
 
 def _sleep_align_wallclock(interval):
@@ -26,6 +32,9 @@ def _banner_dirs(cd, sd, od):
 
 
 def main():
+    # to manage ctrl + C
+    signal(SIGINT, _sigint_handler)
+
     # build argument parser and collect argument values
     desc = 'Integrated Monitoring BLE Logger Collector'
     parser = argparse.ArgumentParser(description=desc)
@@ -53,14 +62,13 @@ def main():
     source_queue = queue.Queue()
     with open(_awl, 'r') as fy:
         loggers_wl_case = yaml.load(fy, Loader=yaml.FullLoader)
-        print(loggers_wl_case)
         loggers_wl = {k.lower(): v for k, v in loggers_wl_case.items()}
 
     reader = ReadBLELCMessagesForever(source_queue, stagingdir, _as, loggers_wl, _ai)
     reader.start()
 
     # thread: master, dequeues reader msgs not atomically
-    # sleep(1) ensures names are unique, do not remove
+    # sleep(1) ensures unique timestamped names, do not remove
     while True:
         _sleep_align_wallclock(_ai)
         while source_queue.qsize():

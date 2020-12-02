@@ -1,13 +1,17 @@
 import bluepy.btle as ble
-
 from ble_mat_facade import _ble_sync_logger_time
-from dir import ls_lid_rn4020
-from mat.logger_controller import DEL_FILE_CMD, RUN_CMD, STATUS_CMD, TIME_CMD
+from mat.logger_controller import DEL_FILE_CMD, RUN_CMD, STATUS_CMD
 from mat.logger_controller_ble import LoggerControllerBLE
 
 
 macs = [
-    '00:1e:c0:4d:bf:c9'
+    # '00:1e:c0:4d:bf:c9',
+    '00:1E:C0:6C:75:07',
+    '00:1E:C0:6C:75:0D',
+    '00:1E:C0:6C:74:FD',
+    '00:1E:C0:6C:74:F2',
+    '00:1E:C0:6C:74:F7',
+    '00:1E:C0:6C:76:13'
 ]
 
 
@@ -56,7 +60,7 @@ def sync_time_one_logger(mac):
 
 if __name__ == '__main__':
     for each_mac in macs:
-        sync_time_one_logger(each_mac)
+        status_one_logger(each_mac)
 
     # for each_mac in macs:
         # it will connect twice but, meh

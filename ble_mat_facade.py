@@ -130,8 +130,8 @@ def _ble_sync_logger_time(lc):
     return True
 
 
-def ble_dl_logger(mac, dl_folder):
-    with LoggerControllerBLE(mac) as lc:
+def ble_dl_logger(mac, dl_folder, hci_if):
+    with LoggerControllerBLE(mac, hci_if) as lc:
         # ensure logger is stopped
         if not _ble_stop_logger(lc):
             e = 'error stopping logger {}'

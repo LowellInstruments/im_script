@@ -111,7 +111,7 @@ class ReadBLELCMessagesForever(threading.Thread):
             for each_sr in scan_results:
                 mac = each_sr[0]
                 print_ble('--- logger {} start ---'.format(mac), 'b')
-                dl_logger_ok, names_dl = ble_dl_logger(mac, self.dl_folder)
+                dl_logger_ok, names_dl = ble_dl_logger(mac, self.dl_folder, self.hci)
 
                 for each_dl in names_dl:
                     path = os.path.join(self.dl_folder, each_dl)
