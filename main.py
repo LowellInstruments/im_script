@@ -53,6 +53,7 @@ def main():
     source_queue = queue.Queue()
     with open(_awl, 'r') as fy:
         loggers_wl_case = yaml.load(fy, Loader=yaml.FullLoader)
+        print(loggers_wl_case)
         loggers_wl = {k.lower(): v for k, v in loggers_wl_case.items()}
 
     reader = ReadBLELCMessagesForever(source_queue, stagingdir, _as, loggers_wl, _ai)
