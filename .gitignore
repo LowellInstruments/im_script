@@ -6,7 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# im_script files
 dl_files/
+.recent.db
 
 # Distribution / packaging
 .Python
